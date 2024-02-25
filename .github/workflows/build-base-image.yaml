@@ -14,6 +14,7 @@ jobs:
       output-file: vulnerabilities-wolfi-jre17
       dockerhub-repo: jasaz/distroless-jre
       dockerhub-tag: wolfi-jre17-one-amd64
+      file-path: ./wolfi/jre/
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -23,7 +24,7 @@ jobs:
         run: docker pull cgr.dev/chainguard/apko
       
       - name: Build Wolfi Base image
-        working-directory: ./Wolfi-Base/jre/
+        working-directory: ${{ env.file-path }}
         run: | 
           echo 'Current Directory is: ' | pwd
           docker run --rm -v ${PWD}:/work -w /work cgr.dev/chainguard/apko build ${{ env.file-name }} ${{env.base-image }}:${{ env.base-image-tag }} ${{ env.tar-file }}
