@@ -30,7 +30,7 @@ This repository is used to build distroless base images. The workflow will build
 ### Create a repository with name distroless-jre
 ### Tag the image to push it to DockerHub
     ``` 
-   docker tag wolfi-jre17:one-amd64 github-user/distroless-jre:wolfi-jre17-one-amd64
+    docker tag wolfi-jre17:one-amd64 github-user/distroless-jre:wolfi-jre17-one-amd64
     ```
 ### In the Console, enter the docker hub credentials
    ``` 
