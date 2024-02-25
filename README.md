@@ -29,14 +29,14 @@ This repository is used to build distroless base images. The workflow will build
 ### Login to DockerHub (https://hub.docker.com) with Username and Password and create a personal access token token with read\write access
 ### Create a repository with name distroless-jre
 ### Tag the image to push it to DockerHub
-    ```
+   ```
    docker tag wolfi-jre17:one-amd64 github-user/distroless-jre:wolfi-jre17-one-amd64
-    ```
+   ```
 ### In the Console, enter the docker hub credentials
    ``` 
    docker login -u github-user
    ```
 ### Push the image to the repository
-    ``` 
+   ``` 
    docker push github-user/distroless-jre:wolfi-jre17-one-amd64
-    ```
+   ```
