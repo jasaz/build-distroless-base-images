@@ -7,14 +7,14 @@ on:
 jobs:
   wolfi-jre17:
     env:
-      file-name: wolfi-jre17.yaml
+      file-path: ./wolfi/jre/
+      file-name: wolfi-jre-17.yaml
       base-image: wolfi-jre17
       base-image-tag: one
       tar-file: wolfi-jre17.tar
       output-file: vulnerabilities-wolfi-jre17
       dockerhub-repo: jasaz/distroless-jre
       dockerhub-tag: wolfi-jre17-one-amd64
-      file-path: ./wolfi/jre/
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
