@@ -1,0 +1,51 @@
+name: build images
+on:
+  # workflow_dispatch
+  push:
+    branches:
+      - abc
+    paths-ignore:
+      - 'README.md'
+      - 'LICENSE'
+jobs:
+  wolfi-jre17:
+    env:
+      file-path: ./wolfi/jre/
+      file-name: wolfi-jre-17.yaml
+      base-image: wolfi-jre17
+      base-image-tag: one
+      tar-file: wolfi-jre17.tar
+      output-file: vulnerabilities-wolfi-jre17
+      dockerhub-repo: jasaz/distroless-jre
+      dockerhub-tag: wolfi-jre17-one-amd64
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      
+      - name: Get APKO image builder
+        run: docker pull cgr.dev/chainguard/apko
+      
+      - name: Build Wolfi Base image
+        working-directory: ${{ env.file-path }}
+        run: | 
+          echo 'Current Directory is: ' | pwd
+          docker run --rm -v ${PWD}:/work -w /work cgr.dev/chainguard/apko build ${{ env.file-name }} ${{env.base-image }}:${{ env.base-image-tag }} ${{ env.tar-file }}
+          docker load < ${{ env.tar-file }}
+      
+      - name: Generate Vulnerability Report
+        run: |
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Library/Caches:/root/.cache/ aquasec/trivy image ${{ env.base-image }}:${{ env.base-image-tag }}-amd64 > ${{ env.output-file }}
+          cat ${{ env.output-file }}
+      
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Push the image to Dockerhub
+        run: |
+          # Tag the image
+          docker tag ${{ env.base-image }}:${{ env.base-image-tag }}-amd64 ${{ env.dockerhub-repo }}:${{ env.dockerhub-tag }}
+          docker push ${{ env.dockerhub-repo }}:${{ env.dockerhub-tag }}
+          
