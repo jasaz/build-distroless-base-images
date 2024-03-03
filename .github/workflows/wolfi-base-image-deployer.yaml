@@ -2,7 +2,7 @@ name: Deploy Wolfi Base Images
 on:
   push:
     branches:
-      - abc
+      - main
 
 jobs:
   deploy_py3-10:
