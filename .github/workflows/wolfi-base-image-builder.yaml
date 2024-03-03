@@ -1,4 +1,4 @@
-name: Call this function to build Wolfi base Images
+name: Call this function to build Wolfi base Images and Push to the repo
 
 on:
   workflow_call:
@@ -11,6 +11,10 @@ on:
         type: string
         required: true
         description: Name of the file for building the image
+      base-image-name:
+        type: string
+        required: true
+        description: Name of the file for building the image
       repo-name:
         type: string
         required: true
@@ -20,10 +24,39 @@ on:
         required: true
         description: The tag of the image name
 jobs:
-    wolfi-base:
+    wolfi-py3-10-base:
       runs-on: ubuntu-latest
       env:         
-        base-image: wolfi-jre17
         base-image-tag: one
-        tar-file: wolfi-jre17.tar
-        output-file: vulnerabilities-wolfi-jre17
+        output-file: vulnerabilities-wolfi-py3-10
+      steps:
+        - name: Checkout Code
+          uses: actions/checkout@v4
+
+        - name: Get APKO image builder
+          run: docker pull cgr.dev/chainguard/apko
+
+        - name: Build Wolfi Base image
+          working-directory: ${{ inputs.file-path }}
+          run: | 
+            echo "TAR_FILE=${{ inputs.base-image-name }}.tar" >> $GITHUB_ENV
+            docker run --rm -v ${PWD}:/work -w /work cgr.dev/chainguard/apko build ${{ inputs.file-name }} ${{ inputs.base-image-name }}:${{ env.base-image-tag }} ${{ env.TAR_FILE }}
+            docker load < ${{ env.TAR_FILE }}
+        
+        - name: Generate Vulnerability Report
+          run: |
+            # mounting docker.sock needs to be explored
+            docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Library/Caches:/root/.cache/ aquasec/trivy image ${{ inputs.base-image-name }}:${{ env.base-image-tag }}-amd64 > ${{ env.output-file }}
+            cat ${{ env.output-file }}
+
+        - name: Login to DockerHub
+          uses: docker/login-action@v3
+          with:
+            username: ${{ secrets.DOCKERHUB_USERNAME }}
+            password: ${{ secrets.DOCKERHUB_TOKEN }}
+            
+        - name: Push the image to Dockerhub
+          run: |
+            # Tag the image
+            docker tag ${{ inputs.base-image-name }}:${{ env.base-image-tag }}-amd64 ${{ inputs.repo-name }}:${{ inputs.repo-tag }}
+            docker push ${{ inputs.repo-name }}:${{ inputs.repo-tag }}
