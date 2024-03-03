@@ -3,7 +3,7 @@ on:
   # workflow_dispatch
   push:
     branches:
-      - abc
+      - main
     paths-ignore:
       - 'README.md'
       - 'LICENSE'
