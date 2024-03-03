@@ -35,9 +35,11 @@ jobs:
         - name: Build Wolfi Base image
           working-directory: ${{ inputs.file-path }}
           run: | 
-            echo "TAR_FILE=${{ inputs.base-image-name }}.tar" >> $GITHUB_ENV
-            docker run --rm -v ${PWD}:/work -w /work cgr.dev/chainguard/apko build ${{ inputs.file-name }} ${{ inputs.base-image-name }}:${{ env.base-image-tag }} ${{ env.TAR_FILE }}
-            docker load < ${{ env.TAR_FILE }}
+            # echo "TAR_FILE=${{ inputs.base-image-name }}.tar" >> $GITHUB_ENV
+            TAR_FILE=${{ inputs.base-image-name }}.tar
+            docker run --rm -v ${PWD}:/work -w /work cgr.dev/chainguard/apko build ${{ inputs.file-name }} ${{ inputs.base-image-name }}:${{ env.base-image-tag }} $TAR_FILE
+            docker load < $TAR_FILE
+            # docker load < ${{ env.TAR_FILE }}
         
         - name: Generate Vulnerability Report
           run: |
