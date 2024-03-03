@@ -1,0 +1,29 @@
+name: Call this function to build Wolfi base Images
+
+on:
+  workflow_call:
+    inputs:
+      file-path:
+        type: string
+        required: true
+        description: The file path containing the image specs
+      file-name:
+        type: string
+        required: true
+        description: Name of the file for building the image
+      repo-name:
+        type: string
+        required: true
+        description: Repository where the artifactory will be pushed
+      repo-tag:
+        type: string
+        required: true
+        description: The tag of the image name
+jobs:
+    wolfi-base:
+      runs-on: ubuntu-latest
+      env:         
+        base-image: wolfi-jre17
+        base-image-tag: one
+        tar-file: wolfi-jre17.tar
+        output-file: vulnerabilities-wolfi-jre17
