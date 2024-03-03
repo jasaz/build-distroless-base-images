@@ -11,7 +11,7 @@ jobs:
   wolfi-jre17:
     env:
       file-path: ./wolfi
-      file-name: wolfi-jre-17.yaml
+      file-name: wolfi-jre17.yaml
       base-image: wolfi-jre17
       base-image-tag: one
       tar-file: wolfi-jre17.tar
