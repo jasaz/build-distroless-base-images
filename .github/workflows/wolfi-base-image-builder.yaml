@@ -56,4 +56,4 @@ jobs:
         - name: Push the image to Dockerhub
           run: |
             # Tag the image
-            docker push ${{ inputs.repo-name }}:${{ inputs.base-image-name }}:${{ env.base-image-tag }}-amd64
+            docker push ${{ secrets.DOCKERHUB_USERNAME }}/repo-name:${{ inputs.base-image-name }}:${{ env.base-image-tag }}-amd64
