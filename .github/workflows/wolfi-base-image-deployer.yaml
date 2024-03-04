@@ -12,6 +12,7 @@ jobs:
         file-name: wolfi-python3-10-pip.yaml
         base-image-name: wolfi-python3-10-pip
         repo-name: jasaz/wolfi-python
+      secrets: inherit
         
         
         
