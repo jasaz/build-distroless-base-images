@@ -57,4 +57,6 @@ jobs:
           run: |
             # Tag the image
             REPO_TAG=${{ inputs.base-image-name }}:${{ env.base-image-tag }}-amd64
+            echo ${{ inputs.repo-name }}
+            echo $REPO_TAG
             docker push ${{ inputs.repo-name }}:$REPO_TAG
