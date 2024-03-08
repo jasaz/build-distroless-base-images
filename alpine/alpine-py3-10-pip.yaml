@@ -1,0 +1,27 @@
+contents:
+  repositories:
+    - https://dl-cdn.alpinelinux.org/alpine/edge/main
+  
+  packages:
+    - alpine-base
+    - python3=~3.10
+
+  accounts:
+    groups:
+      - groupname: non-root
+        gid: 65532
+    users:
+      - username: non-root
+      uid: 65532
+  run-as: non-root
+
+work-dir: /app
+
+environment:
+  PATH: /usr/sbin:/sbin:/usr/bin:/bin
+
+entrypoint:
+  command: /bin/sh -l
+
+archs:
+  - x86_64
