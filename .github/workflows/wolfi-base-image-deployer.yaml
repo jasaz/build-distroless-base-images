@@ -5,12 +5,23 @@ on:
       - main
 
 jobs:
-  deploy_py3-10:
+  # Deploys Python 3.10 wolfi base image with Pip 
+  deploy_py3-10-pip:
       uses: ./.github/workflows/wolfi-base-image-builder.yaml
       with:
         file-path: ./wolfi/
         file-name: wolfi-python3-10-pip.yaml
         base-image-name: wolfi-python3-10-pip
+        repo-name: wolfi-python
+      secrets: inherit
+
+  # Deploys Python 3.10 wolfi base image without Pip 
+  deploy_py3-10:
+      uses: ./.github/workflows/wolfi-base-image-builder.yaml
+      with:
+        file-path: ./wolfi/
+        file-name: wolfi-python3-10.yaml
+        base-image-name: wolfi-python3-10
         repo-name: wolfi-python
       secrets: inherit
         
