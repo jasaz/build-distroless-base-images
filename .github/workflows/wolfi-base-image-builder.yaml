@@ -21,10 +21,6 @@ on:
         description: Repository where the artifactory will be pushed
 jobs:
     wolfi-base:
-    
-      permissions:
-        contents: read
-        packages: write
         
       runs-on: ubuntu-latest
       
