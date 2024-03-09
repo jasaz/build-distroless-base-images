@@ -20,11 +20,18 @@ on:
         required: true
         description: Repository where the artifactory will be pushed
 jobs:
-    wolfi-py3-10-base:
+    wolfi-base:
+    
+      permissions:
+        contents: read
+        packages: write
+        
       runs-on: ubuntu-latest
+      
       env:         
         base-image-tag: one
         output-file: vulnerabilities-wolfi-py3-10
+        
       steps:
         - name: Checkout Code
           uses: actions/checkout@v4
