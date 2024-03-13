@@ -1,0 +1,33 @@
+contents:
+  repositories:
+    - https://packages.wolfi.dev/os
+  keyring:
+    - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+  packages:
+    - ca-certificates-bundle
+    - openjdk-17
+    - busybox
+    - libstdc++
+    - lcsm2
+    - libjpeg-turbo
+
+accounts:
+  groups:
+    - groupname: nonroot
+      gid: 65532
+  users:
+    - username: nonroot
+      uid: 65532
+  run-as: nonroot
+
+work-dir: /app
+
+entrypoint:
+  command: java
+
+environment:
+  PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/sbin:/bin:/usr/lib/jvm/java-17-openjdk-bin
+  JAVA_HOME: /usr/lib/jvm/java-17-openjdk
+
+archs:
+  - x86_64
