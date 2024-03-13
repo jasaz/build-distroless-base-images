@@ -8,7 +8,7 @@ contents:
     - openjdk-17
     - busybox
     - libstdc++
-    - lcsm2
+    - lcms2
     - libjpeg-turbo
 
 accounts:
