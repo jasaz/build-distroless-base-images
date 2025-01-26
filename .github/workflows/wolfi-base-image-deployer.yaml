@@ -12,35 +12,35 @@ permissions:
   packages: write
 
 jobs:
-  # Deploys Python 3.10 wolfi base image with Pip 
-  deploy_py3-10-pip:
+  # Deploys Python 3.12 wolfi base image with Pip 
+  deploy_py3-12-pip:
       uses: ./.github/workflows/wolfi-base-image-builder.yaml
       with:
         file-path: ./wolfi/
-        file-name: wolfi-python3-10-pip.yaml
-        base-image-name: wolfi-python3-10-pip
+        file-name: wolfi-python3-12-pip.yaml
+        base-image-name: wolfi-python3-12-pip
         repo-name: wolfi-python
       secrets: inherit
 
-  # Deploys Python 3.10 wolfi base image without Pip 
-  deploy_py3-10:
+  # Deploys Python 3.12 wolfi base image without Pip 
+  deploy_py3-12:
       uses: ./.github/workflows/wolfi-base-image-builder.yaml
       with:
         file-path: ./wolfi/
-        file-name: wolfi-python3-10.yaml
-        base-image-name: wolfi-python3-10
+        file-name: wolfi-python3-12.yaml
+        base-image-name: wolfi-python3-12
         repo-name: wolfi-python
       secrets: inherit
       
    # Deploys JRE 17 wolfi base image with libjpeg 
-  deploy_java17-jpeg:
-      uses: ./.github/workflows/wolfi-base-image-builder.yaml
-      with:
-        file-path: ./wolfi/
-        file-name: wolfi-jre-libjpeg-17.yaml
-        base-image-name: wolfi-jre17-libjpeg
-        repo-name: distroless-jre
-      secrets: inherit
+  # deploy_java17-jpeg:
+  #     uses: ./.github/workflows/wolfi-base-image-builder.yaml
+  #     with:
+  #       file-path: ./wolfi/
+  #       file-name: wolfi-jre-libjpeg-17.yaml
+  #       base-image-name: wolfi-jre17-libjpeg
+  #       repo-name: distroless-jre
+  #     secrets: inherit
         
         
         
