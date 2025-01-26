@@ -1,0 +1,29 @@
+contents:
+  repositories:
+    - https://packages.wolfi.dev/os
+  keyring:
+    - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+  packages:
+    - py3.12-pip
+    - python-3.12
+    - busybox
+
+accounts:
+  groups:
+    - groupname: py_user
+      gid: 65532
+  users:
+    - username: py_user
+      uid: 65532
+  run-as: py_user
+
+work-dir: /app
+
+environment:
+  PATH: /bin:/usr/bin
+
+entrypoint:
+  command: /usr/bin/python3
+
+archs:
+  - x86_64
