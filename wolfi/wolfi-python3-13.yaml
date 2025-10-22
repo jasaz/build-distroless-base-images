@@ -1,0 +1,28 @@
+contents:
+  repositories:
+    - https://packages.wolfi.dev/os
+  keyring:
+    - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+  packages:
+    - python-3.13
+    - busybox
+
+accounts:
+  groups:
+    - groupname: non-root
+      gid: 65532
+  users:
+    - username: non-root
+      uid: 65532
+  run-as: non-root
+
+work-dir: /app
+
+environment:
+  PATH: /bin:/usr/bin
+
+entrypoint:
+  command: /usr/bin/python3
+
+archs:
+  - x86_64
