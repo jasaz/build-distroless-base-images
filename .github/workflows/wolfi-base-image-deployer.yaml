@@ -12,7 +12,7 @@ permissions:
   packages: write
 
 jobs:
-  # Deploys Python 3.13 wolfi base image with Pip 
+    # Deploys Python 3.13 wolfi base image with PIP 
   deploy_py3-13-pip:
       uses: ./.github/workflows/wolfi-base-image-builder.yaml
       with:
@@ -22,7 +22,7 @@ jobs:
         repo-name: wolfi-python
       secrets: inherit
 
-  # Deploys Python 3.13 wolfi base image without Pip 
+  # Deploys Python 3.13 wolfi base image without PIP 
   deploy_py3-13:
       uses: ./.github/workflows/wolfi-base-image-builder.yaml
       with:
