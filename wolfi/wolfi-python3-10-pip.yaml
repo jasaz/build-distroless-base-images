@@ -11,12 +11,12 @@ contents:
 
 accounts:
   groups:
-    - groupname: py_user
+    - groupname: app
       gid: 65532
   users:
-    - username: py_user
+    - username: app
       uid: 65532
-  run-as: py_user
+  run-as: app
 
 work-dir: /app
 
