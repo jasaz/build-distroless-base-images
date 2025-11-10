@@ -9,14 +9,14 @@ contents:
 
 accounts:
   groups:
-    - groupname: non-root
+    - groupname: nonroot
       gid: 65532
   users:
-    - username: non-root
+    - username: nonroot
       uid: 65532
-  run-as: non-root
+  run-as: nonroot
 
-work-dir: /app
+work-dir: /nonroot
 
 environment:
   PATH: /bin:/usr/bin
