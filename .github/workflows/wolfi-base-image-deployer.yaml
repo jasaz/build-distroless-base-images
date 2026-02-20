@@ -52,7 +52,7 @@ jobs:
         repo-name: wolfi-python
       secrets: inherit
       
-   # Deploys JRE 17 wolfi base image with libjpeg 
+  # Deploys JRE 17 wolfi base image with libjpeg 
   # deploy_java17-jpeg:
   #     uses: ./.github/workflows/wolfi-base-image-builder.yaml
   #     with:
