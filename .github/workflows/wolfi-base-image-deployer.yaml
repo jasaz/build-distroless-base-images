@@ -12,76 +12,27 @@ permissions:
   packages: write
 
 jobs:
-     # Deploys Python 3.14 wolfi base image with PIP 
-  deploy_py3-14-pip:
-      uses: ./.github/workflows/wolfi-base-image-builder.yaml
-      with:
-        file-path: ./wolfi/
-        file-name: wolfi-python3-14-pip.yaml
-        base-image-name: wolfi-python3-14-pip
-        repo-name: wolfi-python
-      secrets: inherit
+  deploy:
+    strategy:
+      matrix:
+        include:
+          - file-name: wolfi-python3-12.yaml
+            base-image-name: wolfi-python3-12
+          - file-name: wolfi-python3-12-pip.yaml
+            base-image-name: wolfi-python3-12-pip
+          - file-name: wolfi-python3-13.yaml
+            base-image-name: wolfi-python3-13
+          - file-name: wolfi-python3-13-pip.yaml
+            base-image-name: wolfi-python3-13-pip
+          - file-name: wolfi-python3-14.yaml
+            base-image-name: wolfi-python3-14
+          - file-name: wolfi-python3-14-pip.yaml
+            base-image-name: wolfi-python3-14-pip
+    uses: ./.github/workflows/wolfi-base-image-builder.yaml
+    with:
+      file-path: ./wolfi/
+      file-name: ${{ matrix.file-name }}
+      base-image-name: ${{ matrix.base-image-name }}
+      repo-name: wolfi-python
+    secrets: inherit
 
-  # Deploys Python 3.14 wolfi base image without PIP 
-  deploy_py3-14:
-      uses: ./.github/workflows/wolfi-base-image-builder.yaml
-      with:
-        file-path: ./wolfi/
-        file-name: wolfi-python3-14.yaml
-        base-image-name: wolfi-python3-14
-        repo-name: wolfi-python
-      secrets: inherit
-      
-    # Deploys Python 3.13 wolfi base image with PIP 
-  deploy_py3-13-pip:
-      uses: ./.github/workflows/wolfi-base-image-builder.yaml
-      with:
-        file-path: ./wolfi/
-        file-name: wolfi-python3-13-pip.yaml
-        base-image-name: wolfi-python3-13-pip
-        repo-name: wolfi-python
-      secrets: inherit
-
-  # Deploys Python 3.13 wolfi base image without PIP 
-  deploy_py3-13:
-      uses: ./.github/workflows/wolfi-base-image-builder.yaml
-      with:
-        file-path: ./wolfi/
-        file-name: wolfi-python3-13.yaml
-        base-image-name: wolfi-python3-13
-        repo-name: wolfi-python
-      secrets: inherit
-      
-  # Deploys Python 3.12 wolfi base image with Pip 
-  deploy_py3-12-pip:
-      uses: ./.github/workflows/wolfi-base-image-builder.yaml
-      with:
-        file-path: ./wolfi/
-        file-name: wolfi-python3-12-pip.yaml
-        base-image-name: wolfi-python3-12-pip
-        repo-name: wolfi-python
-      secrets: inherit
-
-  # Deploys Python 3.12 wolfi base image without Pip 
-  deploy_py3-12:
-      uses: ./.github/workflows/wolfi-base-image-builder.yaml
-      with:
-        file-path: ./wolfi/
-        file-name: wolfi-python3-12.yaml
-        base-image-name: wolfi-python3-12
-        repo-name: wolfi-python
-      secrets: inherit
-      
-  # Deploys JRE 17 wolfi base image with libjpeg 
-  # deploy_java17-jpeg:
-  #     uses: ./.github/workflows/wolfi-base-image-builder.yaml
-  #     with:
-  #       file-path: ./wolfi/
-  #       file-name: wolfi-jre-libjpeg-17.yaml
-  #       base-image-name: wolfi-jre17-libjpeg
-  #       repo-name: distroless-jre
-  #     secrets: inherit
-        
-        
-        
-    
