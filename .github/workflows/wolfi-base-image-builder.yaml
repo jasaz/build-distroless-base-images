@@ -44,11 +44,19 @@ jobs:
             docker load < $TAR_FILE
             # docker load < ${{ env.TAR_FILE }}
         
+            
         - name: Generate Vulnerability Report
-          run: |
-            # mounting docker.sock needs to be explored
-            docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Library/Caches:/root/.cache/ aquasec/trivy image ${{ inputs.base-image-name }}:${{ env.base-image-tag }}-amd64 > ${{ env.output-file }}
-            cat ${{ env.output-file }}
+          uses: aquasecurity/trivy-action@v0.35.0
+          env:
+            TRIVY_VERSION: v0.69.3
+          with:
+            image-ref: ${{ inputs.base-image-name }}:${{ env.base-image-tag }}-amd64
+            format: table
+            output: ${{ env.output-file }}
+            exit-code: '0'
+
+        - name: Print Vulnerability Report
+          run: cat ${{ env.output-file }}
 
         - name: Login to Docker Hub
           uses: docker/login-action@v3
