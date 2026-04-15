@@ -25,8 +25,8 @@ jobs:
       runs-on: ubuntu-latest
       
       env:         
-        base-image-tag: one
-        output-file: vulnerabilities-wolfi-py3-10
+        base-image-tag: build
+        output-file: vulnerabilities-${{ inputs.base-image-name }}
         
       steps:
         - name: Checkout Code
@@ -58,6 +58,10 @@ jobs:
         
         - name: Push the image to Dockerhub
           run: |
-            # Tag the image
+            AUDIT_TAG=${{ inputs.base-image-name }}-$(date +%Y%m%d)
+            # Stable tag (overwritten daily)
             docker tag ${{ inputs.base-image-name }}:${{ env.base-image-tag }}-amd64 ${{ secrets.DOCKERHUB_USERNAME }}/${{ inputs.repo-name }}:${{ inputs.base-image-name }}
             docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ inputs.repo-name }}:${{ inputs.base-image-name }}
+            # Audit tag (immutable, for rollback)
+            docker tag ${{ inputs.base-image-name }}:${{ env.base-image-tag }}-amd64 ${{ secrets.DOCKERHUB_USERNAME }}/${{ inputs.repo-name }}:${AUDIT_TAG}
+            docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ inputs.repo-name }}:${AUDIT_TAG}

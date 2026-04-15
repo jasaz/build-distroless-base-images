@@ -1,0 +1,58 @@
+name: Cleanup old audit tags
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+
+    env:
+      RETENTION_DAYS: 7
+
+    steps:
+      - name: Delete audit tags older than retention period
+        run: |
+          # Get DockerHub auth token
+          TOKEN=$(curl -s -X POST "https://hub.docker.com/v2/users/login" \
+            -H "Content-Type: application/json" \
+            -d '{"username": "${{ secrets.DOCKERHUB_USERNAME }}", "password": "${{ secrets.DOCKERHUB_TOKEN }}"}' \
+            | jq -r .token)
+
+          REPO="${{ secrets.DOCKERHUB_USERNAME }}/wolfi-python"
+          CUTOFF_DATE=$(date -d "-${RETENTION_DAYS} days" +%Y%m%d)
+
+          # Fetch all tags (paginated)
+          PAGE=1
+          while true; do
+            RESPONSE=$(curl -s "https://hub.docker.com/v2/repositories/${REPO}/tags?page=${PAGE}&page_size=100" \
+              -H "Authorization: Bearer ${TOKEN}")
+
+            TAGS=$(echo "$RESPONSE" | jq -r '.results[].name')
+            if [ -z "$TAGS" ]; then
+              break
+            fi
+
+            for TAG in $TAGS; do
+              # Match audit tags with date suffix (e.g., wolfi-python3-14-pip-20260405)
+              if [[ "$TAG" =~ -([0-9]{8})$ ]]; then
+                TAG_DATE="${BASH_REMATCH[1]}"
+                if [ "$TAG_DATE" -lt "$CUTOFF_DATE" ]; then
+                  echo "Deleting old audit tag: ${TAG} (date: ${TAG_DATE})"
+                  curl -s -X DELETE "https://hub.docker.com/v2/repositories/${REPO}/tags/${TAG}" \
+                    -H "Authorization: Bearer ${TOKEN}"
+                fi
+              fi
+            done
+
+            # Check if there are more pages
+            NEXT=$(echo "$RESPONSE" | jq -r '.next')
+            if [ "$NEXT" = "null" ]; then
+              break
+            fi
+            PAGE=$((PAGE + 1))
+          done
+
+          echo "Cleanup complete. Removed audit tags older than ${RETENTION_DAYS} days."
